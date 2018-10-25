@@ -26,12 +26,12 @@ sub get_devstat {
     while(<$fh>) {
         s/^\s+|\s+\n$//g;
         @devstat = split /\s+/;
-        goto FOUND if $devstat[DEV_NAME] eq $devname;
+        if ($devstat[DEV_NAME] eq $devname) {
+            close($fh);
+            return \@devstat;
+        }
     }
     die "device not found";
-FOUND:
-    close($fh);
-    return \@devstat;
 }
 
 my $devname = $ARGV[0];
